@@ -1,6 +1,8 @@
-﻿// Copyright © 2015 by Bit Smasher Labs.  All Rights Reserved.
+﻿/// <reference path="cloud.js" />
 /// <reference path="common.js" />
 /// <reference path="../jshashtable-3.0.js" />
+/// <reference path="persistMgr.js" />
+// Copyright © 2015 by Bit Smasher Labs.  All Rights Reserved.
 
 
 // Given syncData from server, builds and maintains a set of JS
@@ -10,7 +12,6 @@
 
     syncNs.init = function () {
         commonNs.log("syncNs init");
-        $.support.cors = true;
     }
 
     // SyncData from server is an array of SyncDataDTO objects:

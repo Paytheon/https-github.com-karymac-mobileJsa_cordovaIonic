@@ -2,6 +2,9 @@
 /// <reference path="core/common.js" />
 /// <reference path="core/cloud.js" />
 /// <reference path="core/environment.js" />
+/// <reference path="core/db.js" />
+/// <reference path="core/sync.js" />
+// Copyright © 2015 by Bit Smasher Labs.  All Rights Reserved.
 
 angular.module('starter.controllers', [])
 
@@ -37,18 +40,31 @@ angular.module('starter.controllers', [])
             $scope.loginData.companyAbbreviatedName,
             $scope.loginData.emplPin,
             environmentNs.getDeviceInfo().deviceGuid,
-            function (response) {
-                if (response.ErrorMessage != null) {
+            function (r1) {
+                if (r1.ErrorMessage != null) {
                     $scope.$apply(function () {
-                        $scope.loginData.errorMessage = response.ErrorMessage;
+                        $scope.loginData.errorMessage = r1.ErrorMessage;
                     });
                     return;
                 }
-                var li = response.Payload; // companyId, employeeId, deviceId, secret
-                commonNs.log('logged in: '+ko.toJSON(li));
-                persistMgrNs.setLoggedInAs(li);
-
+                var li = r1.Payload; // companyId, employeeId, deviceId, secret
                 // do a quick sync to bootstrap the system.
+                cloudNs.connectAndGetSyncData(li, false, function (r2) {
+                    if (r2.ErrorMessage != null) {
+                        $scope.$apply(function () {
+                            $scope.loginData.errorMessage = r2.ErrorMessage;
+                        });
+                        return;
+                    }
+                    // sync db
+                    var syncData = r2.Payload.syncData;
+                    var md = dbNs.getMirroredData();
+                    syncNs.updateMirroredData(md, syncData);
+                    dbNs.setMirroredData(md);
+
+                    commonNs.log('logged in: ' + ko.toJSON(li));
+                    persistMgrNs.setLoggedInAs(li);
+                });
 
                 $scope.closeLogin();
             });

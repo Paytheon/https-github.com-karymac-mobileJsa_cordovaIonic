@@ -20,6 +20,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
     function init() {
         commonNs.init();
+        dbNs.init();
         cloudNs.init();
         environmentNs.init();
         geoNs.init();

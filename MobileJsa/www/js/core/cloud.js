@@ -10,6 +10,7 @@
     //var baseUrl = '';
 
     cloudNs.init = function(){
+        commonNs.log("cloudNs init");
         $.support.cors = true;
     }
 
@@ -18,6 +19,7 @@
         $.ajax(ao);
     }
 
+    // Payload = {companyId, employeeId, deviceId, secret}
     cloudNs.login = function (companyAbbreviatedName, emplPin, deviceGuid, onComplete) {
         var data = {
             companyAbbreviatedName: companyAbbreviatedName,
@@ -29,6 +31,7 @@
         $.ajax(ao);
     }
 
+    // Payload = {sessionToken}
     cloudNs.connect = function (loginInfo, onComplete) {
         var data = {
             companyId: loginInfo.companyId,
@@ -46,15 +49,43 @@
         $.ajax(ao);
     }
 
-    cloudNs.getSyncData = function(sessionToken, updateDeviceLastSynced, onComplete){
+    // Payload = {syncData}
+    cloudNs.getSyncData = function (sessionToken, updateDeviceLastSynced, onComplete) {
         var data = {
             sessionToken: sessionToken,
             updateDeviceLastSynced: updateDeviceLastSynced
         };
 
-        var ao = ajaxPostObject('GetSyncData', data, onComplete);
+        var ao = ajaxGetObject('GetSyncData', data, onComplete);
         $.ajax(ao);
     }
+
+    cloudNs.connectAndGetSyncData = function (loginInfo, updateDeviceLastSynced, onComplete) {
+        // Connect
+        cloudNs.connect(loginInfo, function (r1) {
+            if (r1.ErrorMessage != null) {
+                onComplete(r1);
+                return;
+            }
+            // GetSyncData
+            var sessionToken = r1.Payload.sessionToken;
+            cloudNs.getSyncData(sessionToken, updateDeviceLastSynced, function (r2) {
+                if (r2.ErrorMessage != null) {
+                    onComplete(r2);
+                    return;
+                }
+                // Disconnect
+                cloudNs.disconnect(sessionToken, function (r3) {
+                    if (r3.ErrorMessage != null) {
+                        onComplete(r3);
+                        return;
+                    }
+                    onComplete(r2); // <- send back r2, which contains syncData
+                });
+            });
+        });
+    }
+
 
     //#region Plumbing
 
