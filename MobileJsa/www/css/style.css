@@ -1,0 +1,16 @@
+﻿body {
+}
+
+.center{
+    text-align:center;
+}
+
+.homeIntro{
+    font-size:larger;
+    margin:30px;
+    width:100%
+}
+
+.red{
+    background-color:red;
+}
