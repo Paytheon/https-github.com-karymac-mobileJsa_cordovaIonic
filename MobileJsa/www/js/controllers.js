@@ -47,6 +47,9 @@ angular.module('starter.controllers', [])
                 var li = response.Payload; // companyId, employeeId, deviceId, secret
                 commonNs.log('logged in: '+ko.toJSON(li));
                 persistMgrNs.setLoggedInAs(li);
+
+                // do a quick sync to bootstrap the system.
+
                 $scope.closeLogin();
             });
     };
@@ -64,7 +67,7 @@ angular.module('starter.controllers', [])
 
     // KO test stuff
     var koVm = {
-        someText: ko.observable('james sucks')
+        someText: ko.observable('ko obs value')
     };
 
     $scope.bindKo = function () {

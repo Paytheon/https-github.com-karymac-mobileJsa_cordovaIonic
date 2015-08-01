@@ -29,15 +29,30 @@
         $.ajax(ao);
     }
 
-    cloudNs.connect = function (linkGuid, onComplete) {
-        var data = { linkGuid: linkGuid };
+    cloudNs.connect = function (loginInfo, onComplete) {
+        var data = {
+            companyId: loginInfo.companyId,
+            employeeId: loginInfo.employeeId,
+            deviceId: loginInfo.deviceId,
+            secret: loginInfo.secret
+        };
         var ao = ajaxGetObject('Connect', data, onComplete);
         $.ajax(ao);
     }
 
-    cloudNs.disconnect = function (linkGuid, onComplete) {
-        var data = { linkGuid: linkGuid };
+    cloudNs.disconnect = function (sessionToken, onComplete) {
+        var data = { sessionToken: sessionToken };
         var ao = ajaxGetObject('Disconnect', data, onComplete);
+        $.ajax(ao);
+    }
+
+    cloudNs.getSyncData = function(sessionToken, updateDeviceLastSynced, onComplete){
+        var data = {
+            sessionToken: sessionToken,
+            updateDeviceLastSynced: updateDeviceLastSynced
+        };
+
+        var ao = ajaxPostObject('GetSyncData', data, onComplete);
         $.ajax(ao);
     }
 

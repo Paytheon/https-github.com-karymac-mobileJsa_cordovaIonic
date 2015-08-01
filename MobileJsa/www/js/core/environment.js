@@ -10,16 +10,6 @@
 
     environmentNs.init = function () {
         commonNs.log('environmentNs.init');
-
-        // Create device ID (guid) if necessary.
-        var deviceGuid = persistNs.getItem(DeviceGuidKey);
-        if (deviceGuid == null) {
-            deviceGuid = commonNs.generateGUID();
-            persistNs.setItem(DeviceGuidKey, deviceGuid);
-            commonNs.log('established device id ' + deviceGuid);
-        }
-        else
-            commonNs.log('device has id ' + deviceGuid);
     };
 
     // --- device info
