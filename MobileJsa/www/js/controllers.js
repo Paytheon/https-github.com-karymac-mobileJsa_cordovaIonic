@@ -82,12 +82,13 @@ angular.module('starter.controllers', [])
                     syncNs.updateMirroredData(md, syncData);
                     syncNs.removeIndices(md);
                     dbNs.setMirroredData(md);
+
                     commonNs.log('synced mirrored data: ' + ko.toJSON(md));
-
-                    setDb();
-
                     commonNs.log('logged in: ' + ko.toJSON(li));
+
                     persistMgrNs.setLoggedInAs(li);
+                    setDb();
+                    $scope.$apply();
                 });
 
                 $scope.closeLogin();
