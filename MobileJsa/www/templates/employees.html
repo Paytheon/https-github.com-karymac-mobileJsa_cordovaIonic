@@ -1,0 +1,9 @@
+<ion-view view-title="company directory">
+  <ion-content>
+      <ion-list>
+          <ion-item ng-repeat="empl in db.Employee | orderBy: ['LastName','FirstName']" href="#/app/employees/{{empl.EmployeeId}}">
+            {{empl.LastName}}, {{empl.FirstName}}
+          </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
