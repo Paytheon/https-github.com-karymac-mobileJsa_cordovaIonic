@@ -23,25 +23,11 @@
         persistNs.setItem(DbKey, md);
     };
 
-    dbNs.getCompany = function (md, companyId) {
-        var co = $.grep(md.Company, function (c, i) {
-            return c.CompanyId == companyId;
+    dbNs.getTableRow = function (md, tableName, propertyName, propertyVal) {
+        var matches = $.grep(md[tableName], function (e, i) {
+            return e[propertyName] == propertyVal;
         });
-        return co.length == 1 ? co[0] : null;
+        return matches.length == 1 ? matches[0] : null;
     };
-
-    dbNs.getEmployee = function (md, employeeId) {
-        var em = $.grep(md.Employee, function (e, i) {
-            return e.EmployeeId == employeeId;
-        });
-        return em.length == 1 ? em[0] : null;
-    }
-
-    dbNs.getFormDef = function (md, formDefId) {
-        var fd = $.grep(md.FormDef, function (e, i) {
-            return e.FormDefId == formDefId;
-        });
-        return fd.length == 1 ? fd[0] : null;
-    }
 
 }(window.dbNs = window.dbNs || {}, jQuery));

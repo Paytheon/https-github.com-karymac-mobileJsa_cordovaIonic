@@ -15,8 +15,8 @@ angular.module('starter.controllers', [])
         if (persistMgrNs.isLoggedIn()) {
             $scope.db = dbNs.getMirroredData();
             var li = persistMgrNs.getLoggedInAs();
-            $scope.company = dbNs.getCompany($scope.db, li.companyId);
-            $scope.employee = dbNs.getEmployee($scope.db, li.employeeId);
+            $scope.company = dbNs.getTableRow($scope.db, 'Company', 'CompanyId', li.companyId);
+            $scope.employee = dbNs.getTableRow($scope.db, 'Employee', 'EmployeeId', li.employeeId);
         } else {
             $scope.company = null;
             $scope.employee = null;
@@ -121,17 +121,11 @@ angular.module('starter.controllers', [])
 
 .controller('employeeCtrl', function ($scope, $stateParams) {
     var emplId = parseInt($stateParams.employeeId);
-    $scope.employee = dbNs.getEmployee($scope.$parent.$parent.db, emplId);
+    $scope.employee = dbNs.getTableRow($scope.$parent.$parent.db, 'Employee', 'EmployeeId', emplId);
 })
 
 .controller('formCtrl', function ($scope, $stateParams) {
-    console.log('---formCtrl---');
-    console.log(ko.toJSON($stateParams));
-    console.log(ko.toJSON(
-        $scope.$parent.$parent.db
-        ));
-
     var formDefId = parseInt($stateParams.formDefId);
-    $scope.formDef = dbNs.getFormDef($scope.$parent.$parent.db, formDefId);
+    $scope.formDef = dbNs.getTableRow($scope.$parent.$parent.db, 'FormDef', 'FormDefId', formDefId);
 })
 ;
