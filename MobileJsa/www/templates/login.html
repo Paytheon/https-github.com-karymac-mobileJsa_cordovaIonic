@@ -1,6 +1,6 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">Login</h1>
+    <h1 class="title">Log In</h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
     </div>
@@ -21,6 +21,6 @@
         </label>
       </div>
     </form>
-      <div>Error logging in: {{loginData.errorMessage}}</div>
+      <div style="color:red; text-align:center" ng-show="hasError()">Error logging in: {{loginData.errorMessage}}</div>
   </ion-content>
 </ion-modal-view>

@@ -1,0 +1,31 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Log Out</h1>
+        <div class="buttons">
+            <button class="button button-clear" ng-click="closeLogout()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider">
+                NOTE
+            </div>
+            <div class="item item-text-wrap">
+                You only need to log out if someone else needs to log in.  Otherwise, you
+                can stay logged in as long as you like, even when this app is closed.
+            </div>
+            <div class="item item-divider">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button class="button button-block button-assertive" ng-click="doLogout()">Log Out</button>
+            </div>
+            <div class="col">
+                <button class="button button-block button-balanced" ng-click="closeLogout()">Don't Log Out</button>
+            </div>
+        </div>
+        
+    </ion-content>
+</ion-modal-view>

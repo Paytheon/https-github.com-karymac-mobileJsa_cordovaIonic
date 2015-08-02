@@ -32,6 +32,13 @@ angular.module('starter.controllers', [])
         $scope.loginModal = modal;
     });
 
+    $ionicModal.fromTemplateUrl('templates/logout.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function (modal) {
+        $scope.logoutModal = modal;
+    });
+
     $scope.isLoggedIn = function () {
         return persistMgrNs.isLoggedIn();
     };
@@ -42,10 +49,23 @@ angular.module('starter.controllers', [])
         $scope.loginModal.hide();
     };
 
+    $scope.closeLogout = function () {
+        $scope.logoutModal.hide();
+    };
+
     $scope.showLogin = function () {
         $scope.loginData.errorMessage = '';
         $scope.loginModal.show();
     };
+
+    $scope.showLogout = function () {
+        $scope.logoutModal.show();
+    };
+
+    $scope.hasError = function () {
+        var em = $scope.loginData.errorMessage;
+        return em != null && em.length > 0;
+    }
 
     $scope.doLogin = function () {
         $scope.loginData.errorMessage = '';
@@ -97,7 +117,11 @@ angular.module('starter.controllers', [])
 
     $scope.doLogout = function () {
         persistMgrNs.setLoggedInAs(null);
+        $scope.company = null;
+        $scope.employee = null;
         $scope.$apply();
+        $scope.closeLogout();
+        window.location = '#/app/home';
     }
     // ---------------------------------------------------
 
@@ -152,10 +176,5 @@ angular.module('starter.controllers', [])
         });
         return cpy;
     }
-
-    //$scope.bindKo = function () {
-    //    var el = document.getElementById('knockoutCrap');
-    //    ko.applyBindings(koVm, el);
-    //};
 })
 ;
