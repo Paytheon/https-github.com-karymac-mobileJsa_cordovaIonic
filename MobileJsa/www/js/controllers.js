@@ -105,16 +105,6 @@ angular.module('starter.controllers', [])
     $scope.$on('$destroy', function () {
         $scope.loginModal.remove();
     });
-
-    // KO test stuff
-    var koVm = {
-        someText: ko.observable('ko obs value')
-    };
-
-    $scope.bindKo = function () {
-        var el = document.getElementById('knockoutCrap');
-        ko.applyBindings(koVm, el);
-    };
 })
 
 .controller('homeCtrl', function ($scope) {
@@ -128,5 +118,44 @@ angular.module('starter.controllers', [])
 .controller('formCtrl', function ($scope, $stateParams) {
     var formDefId = parseInt($stateParams.formDefId);
     $scope.formDef = dbNs.getTableRow($scope.$parent.$parent.db, 'FormDef', 'FormDefId', formDefId);
+
+    // KO viewmodel bound to rich form.
+    // TODO: check for memory leaks around the dynamic KO stuff
+    var koVm = null;
+
+    function initForm() {
+        var htmlWithMarkup = $scope.formDef.RichFormHtmlWithMarkup;
+        var rfd = richFormDefNs.convertHtmlWithMarkupToRichFormDef(htmlWithMarkup);
+
+        var el = $('#formBoundWithKO');
+        el.html(rfd.html);
+        commonNs.log(rfd.html);
+
+        //$(".mjsadate").datepicker();
+
+        koVm = richFormDefNs.createViewModelForRichForm(rfd);
+        ko.applyBindings(koVm, el[0]);
+    };
+    initForm();
+
+    // Use to strip KO VM of validation props.
+    function cloneAndRemoveUnnecessaryProperties(o) {
+        var cpy = {};
+        $.extend(true, cpy, o);
+
+        var allPropNms = Object.getOwnPropertyNames(cpy);
+        var propsToDelete = $.grep(allPropNms, function (nm, i) {
+            return nm.indexOf('_isValid') >= 0 || nm.indexOf('_invalidReason') >= 0;
+        });
+        $.each(propsToDelete, function (i, nm) {
+            delete cpy[nm];
+        });
+        return cpy;
+    }
+
+    //$scope.bindKo = function () {
+    //    var el = document.getElementById('knockoutCrap');
+    //    ko.applyBindings(koVm, el);
+    //};
 })
 ;

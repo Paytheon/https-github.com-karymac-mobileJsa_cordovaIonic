@@ -14,3 +14,11 @@
 .red{
     background-color:red;
 }
+
+.mjsatext{
+    border: solid 1px #c9c9c9 !important;
+}
+
+.mjsadate{
+    border: solid 1px #c9c9c9 !important;
+}
