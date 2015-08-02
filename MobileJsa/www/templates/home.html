@@ -22,7 +22,7 @@
 
         <div ng-show="isLoggedIn()">
             <ion-list>
-                <ion-item ng-repeat="fd in db.FormDef | orderBy: ['Name','Version']"">
+                <ion-item ng-repeat="fd in db.FormDef | orderBy: ['Name','Version']" href="#/app/forms/{{fd.FormDefId}}">
                     {{fd.Name}}
                 </ion-item>
             </ion-list>

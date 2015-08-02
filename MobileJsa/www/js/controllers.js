@@ -38,7 +38,7 @@ angular.module('starter.controllers', [])
 
     $scope.loginData = {};
 
-    $scope.closeLogin = function() {
+    $scope.closeLogin = function () {
         $scope.loginModal.hide();
     };
 
@@ -117,31 +117,21 @@ angular.module('starter.controllers', [])
 })
 
 .controller('homeCtrl', function ($scope) {
-
-    //$scope.playlists = [
-    //  { title: 'Reggae', id: 1 },
-    //  { title: 'Chill', id: 2 },
-    //  { title: 'Dubstep', id: 3 },
-    //  { title: 'Indie', id: 4 },
-    //  { title: 'Rap', id: 5 },
-    //  { title: 'Cowbell', id: 6 }
-    //];
 })
 
 .controller('employeeCtrl', function ($scope, $stateParams) {
-    console.log('---employeeCtrl---');
+    var emplId = parseInt($stateParams.employeeId);
+    $scope.employee = dbNs.getEmployee($scope.$parent.$parent.db, emplId);
+})
+
+.controller('formCtrl', function ($scope, $stateParams) {
+    console.log('---formCtrl---');
     console.log(ko.toJSON($stateParams));
     console.log(ko.toJSON(
         $scope.$parent.$parent.db
         ));
 
-    var emplId = parseInt($stateParams.employeeId);
-    var matches = $.grep($scope.$parent.$parent.db.Employee, function (o, i) {
-        return o.EmployeeId == emplId;
-    });
-
-    if (matches.length == 1)
-        $scope.employee = matches[0];
-    else
-        commonNs.log('canna find empl of id ' + $stateParams.employeeId);
+    var formDefId = parseInt($stateParams.formDefId);
+    $scope.formDef = dbNs.getFormDef($scope.$parent.$parent.db, formDefId);
 })
+;

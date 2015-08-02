@@ -77,7 +77,19 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'employeeCtrl'
       }
     }
-  });
+  })
+
+  .state('app.form', {
+      url: "/forms/:formDefId",
+      views: {
+          'menuContent': {
+              templateUrl: "templates/form.html",
+              controller: 'formCtrl'
+          }
+      }
+  })
+    ;
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
 });

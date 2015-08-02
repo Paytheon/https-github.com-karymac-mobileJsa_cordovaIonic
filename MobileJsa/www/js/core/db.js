@@ -1,6 +1,8 @@
 ﻿/// <reference path="persist.js" />
 // Copyright © 2015 by Bit Smasher Labs.  All Rights Reserved.
 
+// TODO: refactor this and others into services
+
 (function (dbNs, $, undefined) {
     "use strict";
 
@@ -33,6 +35,13 @@
             return e.EmployeeId == employeeId;
         });
         return em.length == 1 ? em[0] : null;
+    }
+
+    dbNs.getFormDef = function (md, formDefId) {
+        var fd = $.grep(md.FormDef, function (e, i) {
+            return e.FormDefId == formDefId;
+        });
+        return fd.length == 1 ? fd[0] : null;
     }
 
 }(window.dbNs = window.dbNs || {}, jQuery));
