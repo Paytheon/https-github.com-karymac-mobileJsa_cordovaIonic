@@ -10,6 +10,10 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
 
+    if (persistMgrNs.isLoggedIn()) {
+        $scope.db = dbNs.getMirroredData();
+    }
+
     // LOGIN ---------------------------------------------
     $ionicModal.fromTemplateUrl('templates/login.html', {
         scope: $scope,
@@ -36,6 +40,9 @@ angular.module('starter.controllers', [])
     $scope.doLogin = function () {
         $scope.loginData.errorMessage = '';
 
+        // TODO: try to login local first.
+
+        // TODO: require network connectivity, error msg, no login if not.
         cloudNs.login(
             $scope.loginData.companyAbbreviatedName,
             $scope.loginData.emplPin,
@@ -59,8 +66,15 @@ angular.module('starter.controllers', [])
                     // sync db
                     var syncData = r2.Payload.syncData;
                     var md = dbNs.getMirroredData();
+
+                    // TODO: consider checking if MD already has a company which does not match loginInfo, reset MD.
+
                     syncNs.updateMirroredData(md, syncData);
+                    syncNs.removeIndices(md);
                     dbNs.setMirroredData(md);
+                    commonNs.log('synced mirrored data: ' + ko.toJSON(md));
+
+                    $scope.db = md;
 
                     commonNs.log('logged in: ' + ko.toJSON(li));
                     persistMgrNs.setLoggedInAs(li);
@@ -104,10 +118,20 @@ angular.module('starter.controllers', [])
     //];
 })
 
-.controller('PlaylistCtrl', function ($scope, $stateParams) {
-    console.log('---PlaylistCtrl---');
-})
+.controller('employeeCtrl', function ($scope, $stateParams) {
+    console.log('---employeeCtrl---');
+    console.log(ko.toJSON($stateParams));
+    console.log(ko.toJSON(
+        $scope.$parent.$parent.db
+        ));
 
-.controller('PlaylistCtrl', function ($scope, $stateParams) {
-    console.log('---PlaylistCtrl---');
-});
+    var emplId = parseInt($stateParams.employeeId);
+    var matches = $.grep($scope.$parent.$parent.db.Employee, function (o, i) {
+        return o.EmployeeId == emplId;
+    });
+
+    if (matches.length == 1)
+        $scope.employee = matches[0];
+    else
+        commonNs.log('canna find empl of id ' + $stateParams.employeeId);
+})
