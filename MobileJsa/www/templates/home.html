@@ -1,21 +1,31 @@
 <ion-view view-title="MobileJSA">
     <ion-content>
 
-        <div class="row center">
-            <div class="homeIntro">
-                MobileJSA provides on-the-go JSAs, Safety Meetings, PPEs, and more.
+        <div ng-hide="isLoggedIn()">
+            <div class="row center">
+                <div class="homeIntro">
+                    MobileJSA provides on-the-go JSAs, Safety Meetings, PPEs, and more.
+                </div>
             </div>
-        </div>
             <div class="row center">
                 <div class="homeIntro">
                     To begin, login.
                     IsLoggedIn: {{isLoggedIn()}}
                 </div>
             </div>
-        <div class="row center">
-            <div class="homeIntro">
-                <button class="button button-block button-positive" ng-click="showLogin()">Login</button>
+            <div class="row center">
+                <div class="homeIntro">
+                    <button class="button button-block button-positive" ng-click="showLogin()">Login</button>
+                </div>
             </div>
+        </div>
+
+        <div ng-show="isLoggedIn()">
+            <ion-list>
+                <ion-item ng-repeat="fd in db.FormDef | orderBy: ['Name','Version']"">
+                    {{fd.Name}}
+                </ion-item>
+            </ion-list>
         </div>
 
     </ion-content>

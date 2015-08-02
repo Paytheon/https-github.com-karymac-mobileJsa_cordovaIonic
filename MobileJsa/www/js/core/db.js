@@ -21,4 +21,18 @@
         persistNs.setItem(DbKey, md);
     };
 
+    dbNs.getCompany = function (md, companyId) {
+        var co = $.grep(md.Company, function (c, i) {
+            return c.CompanyId == companyId;
+        });
+        return co.length == 1 ? co[0] : null;
+    };
+
+    dbNs.getEmployee = function (md, employeeId) {
+        var em = $.grep(md.Employee, function (e, i) {
+            return e.EmployeeId == employeeId;
+        });
+        return em.length == 1 ? em[0] : null;
+    }
+
 }(window.dbNs = window.dbNs || {}, jQuery));

@@ -10,9 +10,19 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
 
-    if (persistMgrNs.isLoggedIn()) {
-        $scope.db = dbNs.getMirroredData();
+
+    function setDb() {
+        if (persistMgrNs.isLoggedIn()) {
+            $scope.db = dbNs.getMirroredData();
+            var li = persistMgrNs.getLoggedInAs();
+            $scope.company = dbNs.getCompany($scope.db, li.companyId);
+            $scope.employee = dbNs.getEmployee($scope.db, li.employeeId);
+        } else {
+            $scope.company = null;
+            $scope.employee = null;
+        }
     }
+    setDb();
 
     // LOGIN ---------------------------------------------
     $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -74,7 +84,7 @@ angular.module('starter.controllers', [])
                     dbNs.setMirroredData(md);
                     commonNs.log('synced mirrored data: ' + ko.toJSON(md));
 
-                    $scope.db = md;
+                    setDb();
 
                     commonNs.log('logged in: ' + ko.toJSON(li));
                     persistMgrNs.setLoggedInAs(li);
